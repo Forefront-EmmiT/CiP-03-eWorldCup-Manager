@@ -1,3 +1,5 @@
-export function maxRounds(n: number) {
-    return n - 1; 
+function maxRounds(n) {
+  return n - 1;
 }
+
+module.exports = { maxRounds };

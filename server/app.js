@@ -4,6 +4,9 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 
+const { maxRounds } = require('./utils/maxRounds.ts');
+const { error } = require('console');
+
 app.set('json spaces', 2);
 
 app.use(express.json());
@@ -26,13 +29,31 @@ app.get('/players', (req, res) => {
     })
 });
 
-// app.get('/rounds/:d', (req, res) => {
-//     res.json(playersData)
+// app.get('/rounds/:n', (req, res) => {
+//     res.json(roundRobin(n))
 // });
 
-// app.get('/rounds/max?n=', (req, res) => {
-//     res.json(playersData)
-// });
+app.get('/rounds/max', (req, res) => {
+    const n = parseInt(req.query.n);
+
+    if(!n || isNaN(n) || n < 2) {
+        return res.status(400).json({
+            error: 'Parameter n is required and must be a number >= 2'
+        });
+    }
+
+    try {
+        const result = maxRounds(n);
+        res.json({
+            maxRounds: result,
+            players: n
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: 'Internal server error'
+        });
+    }
+});
 
 // app.get('/match/remaining?n=&D=', (req, res) => {
 //     res.json(playersData)
