@@ -24,7 +24,7 @@ const getMaxRounds = (req, res, next) => {
     if (!n || isNaN(n) || n < 2) {
         return next({
             status: 400,
-            message: "Parameter n is required an must be a number larger then 1",
+            message: "Parameter n is required and must be a number larger than 1",
         });
     }
     const result = (0, maxRounds_1.maxRounds)(n);
@@ -34,4 +34,16 @@ const getMaxRounds = (req, res, next) => {
     });
 };
 exports.getMaxRounds = getMaxRounds;
+// export const getRounds = (req: Request, res: Response, next: Function) => {
+//   const n = playersData.length;
+//   const d = parseInt(req.query.d as string);
+//   if (!d || isNaN(d) || d < 1) {
+//     return next({
+//       status: 400,
+//       message: "Parameter n is required and must be a number larger than 1",
+//     });
+//   }
+//   const result = roundRobin(n, d, playersData);
+//   res.json({});
+// };
 //# sourceMappingURL=playerController.js.map

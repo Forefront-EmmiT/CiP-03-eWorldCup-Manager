@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import type { Player } from "../types/types";
 import { maxRounds } from "../utils/maxRounds";
+import { roundRobin } from "../utils/roundRobin";
 
 const playersData: Player[] = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../../src/data/players.json"), "utf8")
@@ -25,7 +26,7 @@ export const getMaxRounds = (req: Request, res: Response, next: Function) => {
   if (!n || isNaN(n) || n < 2) {
     return next({
       status: 400,
-      message: "Parameter n is required an must be a number larger then 1",
+      message: "Parameter n is required and must be a number larger than 1",
     });
   }
 
@@ -34,4 +35,19 @@ export const getMaxRounds = (req: Request, res: Response, next: Function) => {
     maxRounds: result,
     players: n,
   });
+};
+
+export const getRounds = (req: Request, res: Response, next: Function) => {
+  const n = playersData.length;
+  const d = parseInt(req.query.d as string);
+
+  if (!d || isNaN(d) || d < 1) {
+    return next({
+      status: 400,
+      message: "Parameter n is required and must be a number larger than 1",
+    });
+  }
+
+  const result = roundRobin(n, d, playersData);
+  res.json({ rounds: result });
 };

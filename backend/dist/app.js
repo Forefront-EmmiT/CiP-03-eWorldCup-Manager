@@ -9,17 +9,18 @@ const errorHandler_1 = require("./src/middlewares/errorHandler");
 const playerRoutes_1 = __importDefault(require("./src/routes/playerRoutes"));
 const app = (0, express_1.default)();
 app.set("json spaces", 2);
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
-app.use(errorHandler_1.errorHandler);
 app.use("/", playerRoutes_1.default);
+app.use(errorHandler_1.errorHandler);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log("Server listening on PORT:", PORT);
 });
-// app.get('/rounds/:n', (req, res) => {
-//     res.json(roundRobin(n))
-// });
 // app.get('/match/remaining?n=&D=', (req, res) => {
 //     res.json(playersData)
 // });
