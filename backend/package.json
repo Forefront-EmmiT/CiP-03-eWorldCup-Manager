@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc && cp src/data/players.json dist/src/data/players.json",
+    "dev": "nodemon --exec ts-node app.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node backend/app.ts"
 
