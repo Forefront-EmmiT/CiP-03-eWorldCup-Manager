@@ -1,4 +1,4 @@
-import data from '../data/participantsList.json';
+import data from "../data/players.json";
 
 export function getOpponentInRounds(n: number, i: number, d: number) {
   const players = data;

@@ -1,0 +1,1 @@
+{"version":3,"file":"remainingMatches.js","sourceRoot":"","sources":["../../../src/utils/remainingMatches.ts"],"names":[],"mappings":";;AAEA,4CAKC;AAPD,2CAAwC;AAExC,SAAgB,gBAAgB,CAAC,CAAS,EAAE,CAAS;IACnD,MAAM,UAAU,GAAG,IAAA,qBAAS,EAAC,CAAC,CAAC,GAAG,CAAC,CAAC;IACpC,MAAM,WAAW,GAAG,UAAU,GAAG,CAAC,CAAC,GAAG,CAAC,CAAC,CAAC;IAEzC,OAAO,WAAW,CAAC;AACrB,CAAC"}
