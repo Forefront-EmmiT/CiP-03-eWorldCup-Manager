@@ -23,12 +23,21 @@ export const getPlayers = (req: Request, res: Response) => {
 };
 
 export const getMaxRounds = (req: Request, res: Response, next: Function) => {
+  const errors: ValidationError[] = [];
   const n = parseInt(req.query.n as string);
 
   if (!n || isNaN(n) || n < 2) {
+    errors.push({
+      field: "n",
+      message: "Parameter n is required and must be a number larger than 1",
+    });
+  }
+
+  if (errors.length > 0) {
     return next({
       status: 400,
-      message: "Parameter n is required and must be a number larger than 1",
+      message: "Validation errors",
+      errors,
     });
   }
 
@@ -40,13 +49,28 @@ export const getMaxRounds = (req: Request, res: Response, next: Function) => {
 };
 
 export const getRounds = (req: Request, res: Response, next: Function) => {
+  const errors: ValidationError[] = [];
   const n = playersData.length;
   const d = parseInt(req.query.d as string);
 
+  if (!n || isNaN(n) || n < 2) {
+    errors.push({
+      field: "n",
+      message: "Parameter n is required and must be a number larger than 2",
+    });
+  }
   if (!d || isNaN(d) || d < 1) {
+    errors.push({
+      field: "d",
+      message: "Parameter d is required and must be a number larger than 1",
+    });
+  }
+
+  if (errors.length > 0) {
     return next({
       status: 400,
-      message: "Parameter n is required and must be a number larger than 1",
+      message: "Validation errors",
+      errors,
     });
   }
 
@@ -69,7 +93,6 @@ export const getRemainingMatches = (
       message: "Parameter n is required and must be a number larger than 2",
     });
   }
-
   if (!D || isNaN(D) || D < 1) {
     errors.push({
       field: "D",
@@ -81,7 +104,7 @@ export const getRemainingMatches = (
     return next({
       status: 400,
       message: "Validation errors",
-      errors: errors,
+      errors,
     });
   }
 
@@ -97,10 +120,24 @@ export const getMatch = (req: Request, res: Response, next: Function) => {
   const i = parseInt(req.query.i as string);
   const d = parseInt(req.query.d as string);
 
+  if (!i || isNaN(i) || i < 1) {
+    errors.push({
+      field: "i",
+      message: "Parameter i is required and must be a number larger than 1",
+    });
+  }
   if (!d || isNaN(d) || d < 1) {
+    errors.push({
+      field: "d",
+      message: "Parameter d is required and must be a number larger than 1",
+    });
+  }
+
+  if (errors.length > 0) {
     return next({
       status: 400,
-      message: "Parameter d is required and must be a number larger than 1",
+      message: "Validation errors",
+      errors,
     });
   }
 
