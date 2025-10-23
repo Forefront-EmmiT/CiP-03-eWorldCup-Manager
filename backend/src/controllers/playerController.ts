@@ -4,6 +4,7 @@ import path from "path";
 import type { Player } from "../types/types";
 import { maxRounds } from "../utils/maxRounds";
 import { roundRobin } from "../utils/roundRobin";
+import { remainingMatches } from "../utils/remainingMatches";
 
 const playersData: Player[] = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../../src/data/players.json"), "utf8")
@@ -50,4 +51,25 @@ export const getRounds = (req: Request, res: Response, next: Function) => {
 
   const result = roundRobin(n, d, playersData);
   res.json({ rounds: result });
+};
+
+export const getRemainingMatches = (
+  req: Request,
+  res: Response,
+  next: Function
+) => {
+  const n = parseInt(req.query.n as string);
+  const D = parseInt(req.query.D as string);
+
+  if (!D || isNaN(D) || D < 1) {
+    return next({
+      status: 400,
+      message: "Parameter n is required and must be a number larger than 1",
+    });
+  }
+
+  const result = remainingMatches(n, D);
+  res.json({
+    remainingMatches: result,
+  });
 };
