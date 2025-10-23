@@ -23,10 +23,6 @@ app.listen(PORT, () => {
   console.log("Server listening on PORT:", PORT);
 });
 
-// app.get('/match?n=&i=&d=', (req, res) => {
-//     res.json(playersData)
-// });
-
 // app.get('/player/:i/schedule', (req, res) => {
 //     res.json(playersData)
 // });

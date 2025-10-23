@@ -6,6 +6,7 @@ import {
   getPlayers,
   getRemainingMatches,
   getRounds,
+  getMatch,
 } from "../controllers/playerController";
 
 const router = Router();
@@ -15,5 +16,6 @@ router.get("/players", getPlayers);
 router.get("/rounds/max", getMaxRounds);
 router.get("/rounds", getRounds);
 router.get("/match/remaining", getRemainingMatches);
+router.get("/match", getMatch);
 
 export default router;
