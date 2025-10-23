@@ -17,3 +17,8 @@ export interface Round {
   roundNumber: number;
   matches: Match[];
 }
+
+export type ValidationError = {
+  field: string;
+  message: string;
+}

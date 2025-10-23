@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
-import type { Player } from "../types/types";
+import type { Player, ValidationError } from "../types/types";
 import { maxRounds } from "../utils/maxRounds";
 import { roundRobin } from "../utils/roundRobin";
 import { remainingMatches } from "../utils/remainingMatches";
@@ -59,13 +59,29 @@ export const getRemainingMatches = (
   res: Response,
   next: Function
 ) => {
+  const errors: ValidationError[] = [];
   const n = parseInt(req.query.n as string);
   const D = parseInt(req.query.D as string);
 
+  if (!n || isNaN(n) || n < 2) {
+    errors.push({
+      field: "n",
+      message: "Parameter n is required and must be a number larger than 2",
+    });
+  }
+
   if (!D || isNaN(D) || D < 1) {
+    errors.push({
+      field: "D",
+      message: "Parameter D is required and must be a number larger than 1",
+    });
+  }
+
+  if (errors.length > 0) {
     return next({
       status: 400,
-      message: "Parameter D is required and must be a number larger than 1",
+      message: "Validation errors",
+      errors: errors,
     });
   }
 
@@ -76,6 +92,7 @@ export const getRemainingMatches = (
 };
 
 export const getMatch = (req: Request, res: Response, next: Function) => {
+  const errors: ValidationError[] = [];
   const n = playersData.length;
   const i = parseInt(req.query.i as string);
   const d = parseInt(req.query.d as string);
