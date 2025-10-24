@@ -7,6 +7,7 @@ import {
   getRemainingMatches,
   getRounds,
   getMatch,
+  getSchedule,
 } from "../controllers/playerController";
 
 const router = Router();
@@ -17,5 +18,6 @@ router.get("/rounds/max", getMaxRounds);
 router.get("/rounds", getRounds);
 router.get("/match/remaining", getRemainingMatches);
 router.get("/match", getMatch);
+router.get("/player/:i/schedule", getSchedule);
 
 export default router;
