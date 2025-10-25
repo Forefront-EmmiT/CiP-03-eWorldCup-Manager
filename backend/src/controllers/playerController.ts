@@ -5,8 +5,9 @@ import type { Player, ValidationError } from "../types/types";
 import { maxRounds } from "../utils/maxRounds";
 import { roundRobin } from "../utils/roundRobin";
 import { remainingMatches } from "../utils/remainingMatches";
-import { getOpponentInRounds } from "../utils/getOpponentInRound";
-import { createSchedule } from "../utils/createSchedule";
+import { getOpponentInRound } from "../utils/getOpponentInRound";
+// import { createSchedule } from "../utils/createSchedule";
+import { generateRound } from "../utils/generateRound";
 
 const playersData: Player[] = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../../src/data/players.json"), "utf8")
@@ -75,7 +76,8 @@ export const getRounds = (req: Request, res: Response, next: Function) => {
     });
   }
 
-  const result = roundRobin(n, d, playersData);
+  const allRounds = roundRobin(n, playersData);
+  const result = generateRound(allRounds, d);
   res.json({ rounds: result });
 };
 
@@ -142,33 +144,33 @@ export const getMatch = (req: Request, res: Response, next: Function) => {
     });
   }
 
-  const result = getOpponentInRounds(n, i, d);
+  const result = getOpponentInRound(n, i, d);
   res.json({
     Opponents: result,
   });
 };
 
-export const getSchedule = (req: Request, res: Response, next: Function) => {
-  const errors: ValidationError[] = [];
-  const n = playersData.length;
-  const i = parseInt(req.params.i as string);
+// export const getSchedule = (req: Request, res: Response, next: Function) => {
+//   const errors: ValidationError[] = [];
+//   const n = playersData.length;
+//   const i = parseInt(req.params.i as string);
 
-  if (!i || isNaN(i) || i < 1) {
-    errors.push({
-      field: "i",
-      message: "Parameter i is required and must be a positive number",
-    });
-  }
-  if (errors.length > 0) {
-    return next({
-      status: 400,
-      message: "Validation errors",
-      errors,
-    });
-  }
+//   if (!i || isNaN(i) || i < 1) {
+//     errors.push({
+//       field: "i",
+//       message: "Parameter i is required and must be a positive number",
+//     });
+//   }
+//   if (errors.length > 0) {
+//     return next({
+//       status: 400,
+//       message: "Validation errors",
+//       errors,
+//     });
+//   }
 
-  const result = createSchedule(n, i);
-  res.json({
-    schedule: result,
-  });
-};
+//   const result = createSchedule(n, i);
+//   res.json({
+//     schedule: result,
+//   });
+// };

@@ -1,18 +1,23 @@
 import data from "../data/players.json";
+import { roundRobin } from "./roundRobin";
+import { roundRobinForSpecificRound } from "./roundRobinForSpecificRound";
 
-export function getOpponentInRounds(n: number, i: number, d: number) {
-  const players = data;
-  let firstPlayer: string;
-  let secondPlayer: string;
+export function getOpponentInRound(n: number, i: number, d: number) {
+  const playerData = data;
 
-  if (n <= data.length && i < data.length) {
-    firstPlayer = players[i].name;
-    secondPlayer = players[((d + n - i) % (n - 1)) + 1].name;
-  } else {
-    // TODO: Round robin for fake players
-    firstPlayer = `Player ${i}`;
-    secondPlayer = `Player ${((d + n - i) % (n - 1)) + 1}`;
-  }
+  // const round = roundRobin(n, d, playerData);
 
-  return `In - round ${d} - player ${firstPlayer} vs. ${secondPlayer}`;
+  // console.log(round[]);
+
+  // const matches = roundRobinForSpecificRound(n, d, players);
+
+  // const match = matches.find(
+  //   (m) => m.playerOne === players[i].name || m.playerTwo === players[i].name
+  // );
+
+  // const opponent =
+  //   match?.playerOne === players[i].name ? match.playerTwo : match?.playerOne;
+
+  // return `In - round ${d} - player ${players[i].name} vs. ${opponent}`;
+  return "hej";
 }

@@ -1,12 +1,13 @@
-import { getOpponentInRounds } from "./getOpponentInRound";
+// // import { getOpponentInRound } from "./getOpponentInRound";
 
-export function createSchedule(n: number, i: number) {
-  const matches: string[] = [];
+// export function createSchedule(n: number, i: number) {
+//   const matches: string[] = [];
 
-  for (let r = 1; r < n; r++) {
-    const match = getOpponentInRounds(n, i, r);
-    matches.push(match);
-  }
+//   for (let r = 1; r < n; r++) {
+//     const match = getOpponentInRound(n, i, r);
+//     matches.push(match);
+//   }
 
-  return matches;
-}
+//   return matches;
+// }
+// // 
