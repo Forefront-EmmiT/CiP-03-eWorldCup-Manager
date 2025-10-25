@@ -1,6 +1,6 @@
 import type { Player, Round, Match } from "../types/types";
 
-export function roundRobin(n: number, d: number, playerData: Player[]) {
+export function roundRobin(n: number, playerData: Player[]): Round[] {
   const players: Player[] = playerData;
   const allRounds: Round[] = [];
 
@@ -28,5 +28,5 @@ export function roundRobin(n: number, d: number, playerData: Player[]) {
     });
   }
 
-  return allRounds[d - 1];
+  return allRounds;
 }
