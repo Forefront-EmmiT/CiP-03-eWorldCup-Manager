@@ -1,13 +1,20 @@
 import express, { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
-import type { Player, ValidationError } from "../types/types";
+import type { Player, ValidationError } from "../../../shared/validation/types";
 import { maxRounds } from "../utils/maxRounds";
 import { roundRobin } from "../utils/roundRobin";
 import { remainingMatches } from "../utils/remainingMatches";
 import { getOpponentInRound } from "../utils/getOpponentInRound";
 // import { createSchedule } from "../utils/createSchedule";
 import { generateRound } from "../utils/generateRound";
+import {
+  validateD,
+  validateIndexD,
+  validateFormInput,
+  validateI,
+  validateN,
+} from "../../../shared/validation/formValidation";
 
 const playersData: Player[] = JSON.parse(
   fs.readFileSync(path.join(__dirname, "../../src/data/players.json"), "utf8")
@@ -28,18 +35,20 @@ export const getMaxRounds = (req: Request, res: Response, next: Function) => {
   const errors: ValidationError[] = [];
   const n = parseInt(req.query.n as string);
 
-  if (!n || isNaN(n) || n < 2) {
+  const validation = validateN(n);
+
+  if (!validation.isValid) {
     errors.push({
       field: "n",
-      message: "Parameter n is required and must be a number larger than 1",
+      message: validation.errorMsg ?? "Unknown validation",
     });
   }
 
-  if (errors.length > 0) {
+  if (!validation.isValid) {
     return next({
       status: 400,
       message: "Validation errors",
-      errors,
+      errors: [{ field: "n", message: validation.errorMsg }],
     });
   }
 
@@ -55,16 +64,12 @@ export const getRounds = (req: Request, res: Response, next: Function) => {
   const n = playersData.length;
   const d = parseInt(req.query.d as string);
 
-  if (!n || isNaN(n) || n < 2) {
-    errors.push({
-      field: "n",
-      message: "Parameter n is required and must be a number larger than 2",
-    });
-  }
-  if (!d || isNaN(d) || d < 1) {
+  const validation = validateN(d);
+
+  if (!validation.isValid) {
     errors.push({
       field: "d",
-      message: "Parameter d is required and must be a number larger than 1",
+      message: validation.errorMsg ?? "Unknown validation",
     });
   }
 
@@ -90,16 +95,20 @@ export const getRemainingMatches = (
   const n = parseInt(req.query.n as string);
   const D = parseInt(req.query.D as string);
 
-  if (!n || isNaN(n) || n < 2) {
-    errors.push({
-      field: "n",
-      message: "Parameter n is required and must be a number larger than 2",
-    });
-  }
-  if (!D || isNaN(D) || D < 1) {
+  const nValidation = validateN(n);
+  const dValidation = validateD(D, n);
+
+  if (!dValidation.isValid) {
     errors.push({
       field: "D",
-      message: "Parameter D is required and must be a number larger than 1",
+      message: dValidation.errorMsg ?? "Unknown validation",
+    });
+  }
+
+  if (!nValidation.isValid) {
+    errors.push({
+      field: "n",
+      message: nValidation.errorMsg ?? "Unknown validation",
     });
   }
 
@@ -123,16 +132,28 @@ export const getMatch = (req: Request, res: Response, next: Function) => {
   const i = parseInt(req.query.i as string);
   const d = parseInt(req.query.d as string);
 
-  if (!i || isNaN(i) || i < 1) {
+  const nValidation = validateN(n);
+  const iValidation = validateI(i, n);
+  const dValidation = validateIndexD(d, n);
+
+  if (!nValidation.isValid) {
     errors.push({
-      field: "i",
-      message: "Parameter i is required and must be a number larger than 1",
+      field: "n",
+      message: nValidation.errorMsg ?? "Unknown validation",
     });
   }
-  if (!d || isNaN(d) || d < 1) {
+
+  if (!iValidation.isValid) {
+    errors.push({
+      field: "i",
+      message: iValidation.errorMsg ?? "Unknown validation",
+    });
+  }
+
+  if (!dValidation.isValid) {
     errors.push({
       field: "d",
-      message: "Parameter d is required and must be a number larger than 1",
+      message: dValidation.errorMsg ?? "Unknown validation",
     });
   }
 
