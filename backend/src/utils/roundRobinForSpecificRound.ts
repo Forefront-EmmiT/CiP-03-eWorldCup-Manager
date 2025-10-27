@@ -1,4 +1,4 @@
-import type { Player, Match } from "../types/types";
+import type { Player, Match } from "../../../shared/validation/types";
 
 export function roundRobinForSpecificRound(
   n: number,

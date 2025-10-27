@@ -1,4 +1,4 @@
-import type { Player, Round, Match } from "../types/types";
+import type { Player, Round, Match } from "../../../shared/validation/types";
 
 export function roundRobin(n: number, playerData: Player[]): Round[] {
   const players: Player[] = playerData;

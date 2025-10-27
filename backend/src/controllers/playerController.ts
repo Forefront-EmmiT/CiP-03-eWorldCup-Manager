@@ -5,13 +5,12 @@ import type { Player, ValidationError } from "../../../shared/validation/types";
 import { maxRounds } from "../utils/maxRounds";
 import { roundRobin } from "../utils/roundRobin";
 import { remainingMatches } from "../utils/remainingMatches";
-import { getOpponentInRound } from "../utils/getOpponentInRound";
-// import { createSchedule } from "../utils/createSchedule";
+import { getOpponentForPlayer } from "../utils/getOpponentInRound";
+import { createSchedule } from "../utils/createSchedule";
 import { generateRound } from "../utils/generateRound";
 import {
   validateD,
   validateIndexD,
-  validateFormInput,
   validateI,
   validateN,
 } from "../../../shared/validation/formValidation";
@@ -83,7 +82,7 @@ export const getRounds = (req: Request, res: Response, next: Function) => {
 
   const allRounds = roundRobin(n, playersData);
   const result = generateRound(allRounds, d);
-  res.json({ rounds: result });
+  res.json({ rounds: allRounds });
 };
 
 export const getRemainingMatches = (
@@ -165,33 +164,33 @@ export const getMatch = (req: Request, res: Response, next: Function) => {
     });
   }
 
-  const result = getOpponentInRound(n, i, d);
+  const result = getOpponentForPlayer(n, i, d);
   res.json({
     Opponents: result,
   });
 };
 
-// export const getSchedule = (req: Request, res: Response, next: Function) => {
-//   const errors: ValidationError[] = [];
-//   const n = playersData.length;
-//   const i = parseInt(req.params.i as string);
+export const getSchedule = (req: Request, res: Response, next: Function) => {
+  const errors: ValidationError[] = [];
+  const n = playersData.length;
+  const i = parseInt(req.params.i as string);
 
-//   if (!i || isNaN(i) || i < 1) {
-//     errors.push({
-//       field: "i",
-//       message: "Parameter i is required and must be a positive number",
-//     });
-//   }
-//   if (errors.length > 0) {
-//     return next({
-//       status: 400,
-//       message: "Validation errors",
-//       errors,
-//     });
-//   }
+  if (!i || isNaN(i) || i < 1) {
+    errors.push({
+      field: "i",
+      message: "Parameter i is required and must be a positive number",
+    });
+  }
+  if (errors.length > 0) {
+    return next({
+      status: 400,
+      message: "Validation errors",
+      errors,
+    });
+  }
 
-//   const result = createSchedule(n, i);
-//   res.json({
-//     schedule: result,
-//   });
-// };
+  const result = createSchedule(n, i);
+  res.json({
+    schedule: result,
+  });
+};
