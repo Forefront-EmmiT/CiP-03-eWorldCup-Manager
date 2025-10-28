@@ -1,0 +1,12 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Byggmappar
+dist/
+build/
+.next/
+out/
+
+# Miljöfiler
+.env
